@@ -58,7 +58,6 @@ This endpoint is used to log in an existing user.
 
 ### Example Response
 
-
 - `user` (object):
     - `fullname` (object):
         - `firstname` (string): User's first name minimum 3 character.
@@ -66,3 +65,41 @@ This endpoint is used to log in an existing user.
     - `email` (string): User's email must be valid.
     - `password` (string): User's password minimum 6 character.
 - `token` (string): Authentication token.
+
+### GET /users/profile
+
+#### Description
+
+This endpoint is used to get the profile of the authenticated user.
+
+#### Request
+
+- **URL**: `/users/profile`
+- **Method**: `GET`
+- **Headers**:
+  - `Authorization`: `Bearer <token>`
+
+### Example Response
+
+- `user` (object):
+    - `fullname` (object):
+        - `firstname` (string): User's first name.
+        - `lastname` (string): User's last name.
+    - `email` (string): User's email.
+
+### GET /users/logout
+
+#### Description
+
+Logout the current user and blacklist the token provided in cookies or headers.
+
+#### Request
+
+- **URL**: `/users/logout`
+- **Method**: `GET`
+- **Headers**:
+  - `Authorization`: `Bearer <token>`
+
+### Example Response
+
+- `message` (string): "Logout successfully"
