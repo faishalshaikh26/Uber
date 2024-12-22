@@ -18,23 +18,23 @@ This endpoint is used to register a new user.
   ```json
   {
     "fullname": {
-      "firstname": "string",
-      "lastname": "string"
+      "firstname": "string", // minimum 3 characters
+      "lastname": "string" // minimum 3 characters
     },
-    "email": "string",
-    "password": "string"
+    "email": "string", // valid email format
+    "password": "string" // minimum 6 characters
   }
   ```
 
 ### Example Response
 
-- `user` (object). 
-    - `fullname` (object). 
-        - `firstname` (string) : Users first name minimum 3 characters. 
-        - `lastname` (string) : Users last name minimum 3 characters. 
-    - `email` (string): Users email minimum 5 characters. 
-    - `passeord` (string):Users password minimum 6 characters. 
-    - `token` (string)
+- `user` (object):
+    - `fullname` (object):
+        - `firstname` (string): User's first name.
+        - `lastname` (string): User's last name.
+    - `email` (string): User's email.
+    - `password` (string): User's password.
+    - `token` (string): Authentication token.
 
 ### POST /users/login
 
@@ -51,8 +51,8 @@ This endpoint is used to log in an existing user.
 - **Body**:
   ```json
   {
-    "email": "string",
-    "password": "string"
+    "email": "string", // valid email format
+    "password": "string" // minimum 6 characters
   }
   ```
 
@@ -60,10 +60,10 @@ This endpoint is used to log in an existing user.
 
 - `user` (object):
     - `fullname` (object):
-        - `firstname` (string): User's first name minimum 3 character.
-        - `lastname` (string): User's last name minimum 3 character.
-    - `email` (string): User's email must be valid.
-    - `password` (string): User's password minimum 6 character.
+        - `firstname` (string): User's first name.
+        - `lastname` (string): User's last name.
+    - `email` (string): User's email.
+    - `password` (string): User's password.
 - `token` (string): Authentication token.
 
 ### GET /users/profile
@@ -120,16 +120,16 @@ This endpoint is used to register a new captain.
   ```json
   {
     "fullname": {
-      "firstname": "string",
-      "lastname": "string"
+      "firstname": "string", // minimum 3 characters
+      "lastname": "string" // minimum 3 characters
     },
-    "email": "string",
-    "password": "string",
+    "email": "string", // valid email format
+    "password": "string", // minimum 6 characters
     "vehicle": {
-      "color": "string",
-      "plate": "string",
-      "capacity": "number",
-      "vehicleType": "string"
+      "color": "string", // minimum 3 characters
+      "plate": "string", // minimum 3 characters
+      "capacity": "number", // numeric value
+      "vehicleType": "string" // one of ['motorcycle', 'car', 'auto']
     }
   }
   ```
@@ -163,8 +163,8 @@ This endpoint is used to log in an existing captain.
 - **Body**:
   ```json
   {
-    "email": "string",
-    "password": "string"
+    "email": "string", // valid email format
+    "password": "string" // minimum 6 characters
   }
   ```
 

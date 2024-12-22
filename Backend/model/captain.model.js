@@ -74,6 +74,14 @@ const captainSchema = new mongoose.Schema({
 }
 );
 
+// Hash the password before saving the captain
+captainSchema.pre('save', async function(next) {
+    if (this.isModified('password')) {
+        this.password = await bcrypt.hash(this.password, 10);
+    }
+    next();
+});
+
 captainSchema.methods.generateAuthToken = function(){
     const token= jwt.sign({id: this._id},process.env.JWT_SECRET,{expiresIn: '24h'});
     return token;
