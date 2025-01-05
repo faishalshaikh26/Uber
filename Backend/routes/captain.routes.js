@@ -1,28 +1,43 @@
 const express = require('express');
-const { body } = require('express-validator'); // Import body from express-validator
+const { body, validationResult } = require('express-validator'); // Import validationResult
 const router = express.Router();
-const captainController = require('../controller/captain.controller');
+const { registerCaptain, loginCaptain, getCaptainProfile, logoutCaptain } = require('../controller/captain.controller');
 const authMiddleware = require('../middlewares/auth.middleware');
-const bcrypt = require('bcryptjs'); // Ensure bcryptjs is required
-const jwt = require('jsonwebtoken');
 
+// Register route for captain
 router.post('/register', [
-    body('fullname.firstname').isLength({ min: 3 }).withMessage('Firstname is required'),
-    body('fullname.lastname').isLength({ min: 3 }).withMessage('Lastname is required'),
+    body('fullname.firstname').isLength({ min: 3 }).withMessage('Firstname must be at least 3 characters'),
+    body('fullname.lastname').isLength({ min: 3 }).withMessage('Lastname must be at least 3 characters'),
     body('email').isEmail().withMessage('Invalid email'),
     body('password').isLength({ min: 6 }).withMessage('Password must be at least 6 characters'),
     body('vehicle.color').isLength({ min: 3 }).withMessage('Color is required'),
-    body('vehicle.plate').isLength({ min: 3 }).withMessage('Plate is required'),
-    body('vehicle.capacity').isNumeric().withMessage('Capacity is required'),
-    body('vehicle.vehicleType').isIn(['motorcycle','car','auto']).withMessage('Invalid vehicle type')
-], captainController.registerCaptain);
+    body('vehicle.plate').isLength({ min: 3 }).withMessage('Plate number must be at least 3 characters'),
+    body('vehicle.capacity').isNumeric().withMessage('Capacity must be a number'),
+    body('vehicle.vehicleType').isIn(['motorcycle', 'car', 'auto']).withMessage('Invalid vehicle type')
+], (req, res, next) => {
+    const errors = validationResult(req); // Check validation errors
+    if (!errors.isEmpty()) {
+        return res.status(400).json({ errors: errors.array() });
+    }
+    next();
+}, registerCaptain);
 
+// Login route for captain
 router.post('/login', [
     body('email').isEmail().withMessage('Invalid email'),
     body('password').isLength({ min: 6 }).withMessage('Password must be at least 6 characters')
-], captainController.loginCaptain);
+], (req, res, next) => {
+    const errors = validationResult(req); // Check validation errors
+    if (!errors.isEmpty()) {
+        return res.status(400).json({ errors: errors.array() });
+    }
+    next();
+}, loginCaptain);
 
-router.get('/profile', authMiddleware.authCaptain,captainController.getProfile);
-router.get('/logout', authMiddleware.authCaptain,captainController.logout);
+// Profile route for captain
+router.get('/profile', authMiddleware.authCaptain, getCaptainProfile);
+
+// Logout route for captain
+router.get('/logout', authMiddleware.authCaptain, logoutCaptain);
 
 module.exports = router;

@@ -1,30 +1,27 @@
+require('dotenv').config(); // Load environment variables from .env
+
 const express = require('express');
 const mongoose = require('mongoose');
-const bcrypt = require('bcryptjs'); // Ensure bcryptjs is required
-const jwt = require('jsonwebtoken');
-const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const captainRoutes = require('./routes/captain.routes');
-const userRoutes = require('./routes/user.routes');
-require('dotenv').config();
+const userRoutes = require('./routes/user.routes'); // Correct file path
 
 const app = express();
 
-app.use(bodyParser.json());
-app.use(cookieParser());
+app.use(express.json()); // Middleware for JSON parsing
+app.use(cookieParser()); // Middleware for cookie parsing
 
 app.use('/captains', captainRoutes);
 app.use('/users', userRoutes);
 
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 4000;
 
-mongoose.connect(process.env.MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true })
+mongoose.connect(process.env.DB_CONNECT)
     .then(() => {
-        app.listen(PORT, () => {
-            console.log(`Server is running on port ${PORT}`);
+        app.listen(process.env.PORT, () => {
+            console.log(`Server is running on port ${process.env.PORT}`);
         });
     })
     .catch(err => {
         console.error('Database connection error:', err);
     });
-
